@@ -30,8 +30,8 @@ export function p2pkh(a: Payment, opts?: PaymentOpts): Payment {
 
   const _address = lazy.value(() => {
     const payload = Buffer.from(bs58check.decode(a.address!));
-    const version = payload.readUInt8(0);
-    const hash = payload.slice(1);
+    const version = payload.readUIntBE(0, 3);
+    const hash = payload.slice(3);
     return { version, hash };
   });
   const _chunks = lazy.value(() => {
@@ -44,9 +44,9 @@ export function p2pkh(a: Payment, opts?: PaymentOpts): Payment {
   lazy.prop(o, 'address', () => {
     if (!o.hash) return;
 
-    const payload = Buffer.allocUnsafe(21);
-    payload.writeUInt8(network.pubKeyHash, 0);
-    o.hash.copy(payload, 1);
+    const payload = Buffer.allocUnsafe(23);
+    payload.writeUIntBE(network.pubKeyHash, 0, 3);
+    o.hash.copy(payload, 3);
     return bs58check.encode(payload);
   });
   lazy.prop(o, 'hash', () => {

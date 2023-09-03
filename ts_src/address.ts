@@ -2,7 +2,7 @@ import { Network } from './networks';
 import * as networks from './networks';
 import * as payments from './payments';
 import * as bscript from './script';
-import { typeforce, tuple, Hash160bit, UInt8 } from './types';
+import { typeforce, tuple, Hash160bit, UInt8, UInt32 } from './types';
 import { bech32, bech32m } from 'bech32';
 import * as bs58check from 'bs58check';
 export interface Base58CheckResult {
@@ -56,11 +56,10 @@ export function fromBase58Check(address: string): Base58CheckResult {
   const payload = Buffer.from(bs58check.decode(address));
 
   // TODO: 4.0.0, move to "toOutputScript"
-  if (payload.length < 21) throw new TypeError(address + ' is too short');
-  if (payload.length > 21) throw new TypeError(address + ' is too long');
-
-  const version = payload.readUint8(0);
-  const hash = payload.slice(1);
+  if (payload.length < 23) throw new TypeError(address + ' is too short');
+  if (payload.length > 23) throw new TypeError(address + ' is too long');
+  const version = payload.readUIntBE(0, 3);
+  const hash = payload.slice(3);
 
   return { version, hash };
 }
@@ -91,11 +90,11 @@ export function fromBech32(address: string): Bech32Result {
 }
 
 export function toBase58Check(hash: Buffer, version: number): string {
-  typeforce(tuple(Hash160bit, UInt8), arguments);
+  typeforce(tuple(Hash160bit, UInt32), arguments);
 
-  const payload = Buffer.allocUnsafe(21);
-  payload.writeUInt8(version, 0);
-  hash.copy(payload, 1);
+  const payload = Buffer.allocUnsafe(23);
+  payload.writeUIntBE(version, 0, 3)
+  hash.copy(payload, 3);
 
   return bs58check.encode(payload);
 }
