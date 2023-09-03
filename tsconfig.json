@@ -4,6 +4,7 @@
     "module": "commonjs",
     "outDir": "./src",
     "declaration": true,
+    "resolveJsonModule": true,
     "rootDir": "./ts_src",
     "types": [
       "node"

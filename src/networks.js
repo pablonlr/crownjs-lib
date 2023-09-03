@@ -9,7 +9,7 @@ exports.crown = {
     private: 0x0488ade4,
   },
   pubKeyHash: 0x017507,
-  scriptHash: 0x0174F1,
+  scriptHash: 0x0174f1,
   wif: 0x80,
 };
 exports.regtest = {
@@ -20,7 +20,7 @@ exports.regtest = {
     private: 0x04358394,
   },
   pubKeyHash: 0x017507,
-  scriptHash: 0x0174F1,
+  scriptHash: 0x0174f1,
   wif: 0xef,
 };
 exports.testnet = {
@@ -30,7 +30,7 @@ exports.testnet = {
     public: 0x043587cf,
     private: 0x04358394,
   },
-  pubKeyHash: 0x017ACD67,
-  scriptHash: 0x017ACD51,
+  pubKeyHash: 0x017acd67,
+  scriptHash: 0x017acd51,
   wif: 0xef,
 };

@@ -50,7 +50,7 @@ describe('Bitcoin-core', () => {
 
       const network: any = params.isTestnet
         ? bitcoin.networks.testnet
-        : bitcoin.networks.bitcoin;
+        : bitcoin.networks.crown;
       const version = network[typeMap[params.addrType]];
 
       it('can export ' + expected, () => {
@@ -65,8 +65,8 @@ describe('Bitcoin-core', () => {
   // base58KeysInvalid
   describe('address.fromBase58Check', () => {
     const allowedNetworks = [
-      bitcoin.networks.bitcoin.pubKeyHash,
-      bitcoin.networks.bitcoin.scriptHash,
+      bitcoin.networks.crown.pubKeyHash,
+      bitcoin.networks.crown.scriptHash,
       bitcoin.networks.testnet.pubKeyHash,
       bitcoin.networks.testnet.scriptHash,
     ];

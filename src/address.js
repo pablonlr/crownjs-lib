@@ -44,10 +44,10 @@ function _toFutureSegwitAddress(output, network) {
 function fromBase58Check(address) {
   const payload = Buffer.from(bs58check.decode(address));
   // TODO: 4.0.0, move to "toOutputScript"
-  if (payload.length < 21) throw new TypeError(address + ' is too short');
-  if (payload.length > 21) throw new TypeError(address + ' is too long');
-  const version = payload.readUint8(0);
-  const hash = payload.slice(1);
+  if (payload.length < 23) throw new TypeError(address + ' is too short');
+  if (payload.length > 23) throw new TypeError(address + ' is too long');
+  const version = payload.readUIntBE(0, 3);
+  const hash = payload.slice(3);
   return { version, hash };
 }
 exports.fromBase58Check = fromBase58Check;
@@ -75,12 +75,12 @@ function fromBech32(address) {
 exports.fromBech32 = fromBech32;
 function toBase58Check(hash, version) {
   (0, types_1.typeforce)(
-    (0, types_1.tuple)(types_1.Hash160bit, types_1.UInt8),
+    (0, types_1.tuple)(types_1.Hash160bit, types_1.UInt32),
     arguments,
   );
-  const payload = Buffer.allocUnsafe(21);
-  payload.writeUInt8(version, 0);
-  hash.copy(payload, 1);
+  const payload = Buffer.allocUnsafe(23);
+  payload.writeUIntBE(version, 0, 3)
+  hash.copy(payload, 3);
   return bs58check.encode(payload);
 }
 exports.toBase58Check = toBase58Check;
